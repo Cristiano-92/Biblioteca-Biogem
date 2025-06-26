@@ -116,31 +116,31 @@ def cerca(fondi, query, parola_chiave):
         df_copia["_Fondo"] = nome_fondo
 
         condizioni = []
+
         if query:
             condizioni.append(
                 df_copia.apply(lambda r: query.lower() in str(r).lower(), axis=1)
             )
-   if parola_chiave:
-    if df_copia.shape[1] > 4:  # cioè se ha almeno 5 colonne
-        condizioni.append(
-            df_copia.iloc[:, 4].astype(str).str.lower().str.contains(parola_chiave.lower())
-        )
-    else:
-        continue  # salta il foglio se non ha abbastanza colonne
 
-    
-    else:
-        continue  # salta il foglio se non ha abbastanza colonne
+        if parola_chiave:
+            if df_copia.shape[1] > 4:  # Verifica che esista almeno la colonna E
+                condizioni.append(
+                    df_copia.iloc[:, 4].astype(str).str.lower().str.contains(parola_chiave.lower())
+                )
+            else:
+                continue
 
         if condizioni:
             filtro = condizioni[0]
             for cond in condizioni[1:]:
                 filtro = filtro & cond
             risultati.append(df_copia[filtro])
+
     if risultati:
         return pd.concat(risultati)
     else:
         return pd.DataFrame()
+
 
 if query or parola_chiave:
     st.markdown("---")
