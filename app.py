@@ -120,10 +120,11 @@ def cerca(fondi, query, parola_chiave):
             condizioni.append(
                 df_copia.apply(lambda r: query.lower() in str(r).lower(), axis=1)
             )
-        if parola_chiave:
-            condizioni.append(
-                df_copia.apply(lambda r: parola_chiave.lower() in str(r).lower(), axis=1)
-            )
+    if parola_chiave:
+    df_filtrato = df[df.iloc[:, 4].astype(str).str.contains(parola_chiave, case=False, na=False)]
+    
+    else:
+        continue  # salta il foglio se non ha abbastanza colonne
 
         if condizioni:
             filtro = condizioni[0]
